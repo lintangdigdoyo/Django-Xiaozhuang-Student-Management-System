@@ -1,0 +1,2 @@
+static/upload/*
+!static/upload/.gitkeep

@@ -1,0 +1,99 @@
+{% extends 'student_management/base.html' %}
+    {% block navbar %}
+        {% include 'student_management/navbar.html' with active='add_user' %}
+    {% endblock  %}
+
+    {% block content %}
+        <div class="block-header">
+            <h2>ADD USER</h2>
+        </div>
+        
+            <form method='POST' enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if success %}
+            <div class="alert bg-green alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                {{success}}
+            </div>
+            {% endif %}
+            
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="body">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <span>User Photo</span> 
+                                        <input type="file" class="form-control" name="photo" accept='image/*' required>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" name="name" required>
+                                        <label class="form-label">First Name</label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" name="surname" required>
+                                        <label class="form-label">Surname</label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="number" class="form-control" name="age" required>
+                                        <label class="form-label">Age</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <span>Gender</span>
+                                    <input type="radio" name="gender" id="male" class="with-gap" value='male'>
+                                    <label for="male">Male</label>
+
+                                    <input type="radio" name="gender" id="female" class="with-gap" value="female">
+                                    <label for="female" class="m-l-20">Female</label>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="username" class="form-control" name="username" required>
+                                        <label class="form-label">Username</label>
+                                    </div>
+                                </div>
+                            
+                                <div class="form-group">
+                                    <span>Role</span>
+                                    <input type="radio" name="role" id="admin" class="with-gap" value="admin">
+                                    <label for="admin">Admin</label>
+
+                                    <input type="radio" name="role" id="staff" class="with-gap" value="staff">
+                                    <label for="staff" class="m-l-20">Staff</label>
+                                
+                                </div>
+                               
+       
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="password" class="form-control" name="password" required>
+                                        <label class="form-label">Password</label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="password" class="form-control" name="confirm_password" required>
+                                        <label class="form-label">Confirm Password</label>
+                                    </div>
+                                </div>
+                                {% if warning %}
+                                <div class="alert bg-red alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>    
+                                    {{warning}}
+                                </div>
+                                {% endif %}
+                                <input type="submit" class="btn btn-primary waves-effect" value="ADD">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+          
+    {% endblock  %}

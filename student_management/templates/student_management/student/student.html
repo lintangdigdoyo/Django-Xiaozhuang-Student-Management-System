@@ -1,0 +1,11 @@
+{% extends 'student_management/base.html' %}
+
+    {% block navbar %}
+        {% include 'student_management/navbar.html' with active='list_student' %}
+    {% endblock  %}
+
+    {% block content %}
+        <div class="block-header">
+                <h2>LIST OF STUDENT</h2>
+        </div>
+    {% endblock  %}

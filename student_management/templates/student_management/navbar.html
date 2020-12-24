@@ -1,0 +1,98 @@
+<section>
+        <!-- Left Sidebar -->
+        <aside id="leftsidebar" class="sidebar">
+            <!-- User Info -->
+            <div class="user-info">
+                <div class="image">
+                    <img src="/static/images/user.png" width="48" height="48" alt="User" />
+                </div>
+                <div class="info-container">
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{fullname|title}}</div>
+                    <div class="email">{{username}} ({{role}})</div>
+                    <div class="btn-group user-helper-dropdown">
+                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="javascript:void(0);"><i class="material-icons">input</i>Sign Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- #User Info -->
+            <!-- Menu -->
+            <div class="menu">
+                <ul class="list">
+                {% if active == 'dashboard' %}
+                <li class='active'>
+                {% else %}
+                    <li>
+                {% endif %}
+                        <a href={% url 'student_management:dashboard' %}>
+                            <i class="material-icons">dashboard</i>
+                            <span>DASHBOARD</span>
+                        </a>
+                    </li>
+                {% if role == 'admin' %}
+                    {% if active == 'list_user' or active == 'add_user' %}
+                        <li class='active'>
+                    {% else %}
+                        <li>
+                    {% endif %}
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="material-icons">supervisor_account</i>
+                                <span>USER</span>
+                            </a>
+                            <ul class="ml-menu">
+                            {% if active == 'list_user' %}
+                                <li class='active'>
+                            {% else %}
+                                <li>
+                            {% endif %}
+                                    <a href={% url 'student_management:list_user' %}>List of User</a>
+                                </li>
+                            {% if active == 'add_user' %}
+                                <li class='active'>
+                            {% else %}
+                                <li>
+                            {% endif %}
+                                    <a href={% url 'student_management:add_user' %}>Add User</a>
+                                </li>
+                            </ul>
+                        </li>
+                {% endif %}
+                {% if role == 'admin' or role == 'staff' %}
+                    {% if active == 'list_student' or active == 'add_student' %}
+                            <li class='active'>
+                        {% else %}
+                            <li>
+                        {% endif %}
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                    <i class="material-icons">school</i>
+                                    <span>STUDENT</span>
+                                </a>
+                                <ul class="ml-menu">
+                                {% if active == 'list_student' %}
+                                    <li class='active'>
+                                {% else %}
+                                    <li>
+                                {% endif %}
+                                        <a href={% url 'student_management:list_student' %}>List of Student</a>
+                                    </li>
+                                {% if active == 'add_student' %}
+                                    <li class='active'>
+                                {% else %}
+                                    <li>
+                                {% endif %}
+                                        <a href={% url 'student_management:add_student' %}>Add Student</a>
+                                    </li>
+                                </ul>
+                            </li>
+                {% endif %}
+                </ul>
+            </div>
+            <!-- #Menu -->
+        </aside>
+</section>
+
+
