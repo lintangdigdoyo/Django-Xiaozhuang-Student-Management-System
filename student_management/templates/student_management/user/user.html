@@ -16,8 +16,8 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Gender</th>
                                             <th>Age</th>
+                                            <th>Gender</th>
                                             <th>Username</th>
                                             <th>Role</th>
                                             <th>Update</th>
@@ -43,16 +43,23 @@
                                             <td>{{user.gender|title}}</td>
                                             <td>{{user.username}}</td>
                                             <td>{{user.role}}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary waves-effect">
-                                                    <i class="material-icons">mode_edit</i>
-                                                </button>
-                                            </td>
-                                            <td> 
-                                                <button type="button" onclick='deleteUser({{user.id}})' class="btn btn-danger waves-effect">
-                                                    <i class="material-icons">delete</i>
-                                                </button>
-                                            </td>
+                                            {% if user.username != username %}
+                                                <td>
+                                                    <a href={% url 'student_management:update_user' user.username %}>
+                                                        <button type="button" class="btn btn-primary waves-effect">
+                                                            <i class="material-icons">mode_edit</i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                                <td> 
+                                                    <button type="button" onclick='deleteUser({{user.id}},"{{user.username}}")' class="btn btn-danger waves-effect">
+                                                        <i class="material-icons">delete</i>
+                                                    </button>
+                                                </td>
+                                            {% else %}
+                                                <td></td>
+                                                <td></td>
+                                            {% endif %}
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -62,25 +69,37 @@
                     </div>
                 </div>
             </div>
-        </div>
-
         <script>
-            function deleteUser(userId){
+            function deleteUser(userId, username){
                 swal({
                     title: "Are you sure?",
-                    text: "Once deleted, you will not be able to recover this user!",
+                    text: `Once deleted ${username}, you will not be able to recover this user!`,
                     icon: "warning",
-                    buttons: true,
+                    buttons: {
+                        cancel: {
+                            text: "Cancel",
+                            value: null,
+                            visible: true,
+                            className: "",
+                            closeModal: true,
+                            },
+                        confirm: {
+                            text: "Delete User",
+                            value: true,
+                            visible: true,
+                            className: "",
+                            closeModal: true
+                        }
+                    },
                     dangerMode: true,
                     })
                     .then((willDelete) => {
                     if (willDelete) {
                         swal("Poof! User has been deleted!", {
                         icon: "success",
-                        });
-                        post('/user/delete-user/', userId)
+                        }).then(()=> post('/user/delete-user/', userId))
                     } else {
-                        swal("User is safe!",{
+                        swal(`Delete aborted, user ${username} is safe!`,{
                         icon: "error",
                         });
                     }

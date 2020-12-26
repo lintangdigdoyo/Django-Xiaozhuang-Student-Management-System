@@ -1,11 +1,11 @@
 {% extends 'student_management/base.html' %}
     {% block navbar %}
-        {% include 'student_management/navbar.html' with active='list_student' %}
+        {% include 'student_management/navbar.html' with active='list_teacher' %}
     {% endblock  %}
 
     {% block content %}
             <div class="block-header">
-                <h2>LIST OF STUDENTS</h2>
+                <h2>LIST OF TEACHERS</h2>
             </div>
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -18,7 +18,6 @@
                                             <th>Name</th>
                                             <th>Age</th>
                                             <th>Gender</th>
-                                            <th>Username</th>
                                             <th>Update</th>
                                             <th>Delete</th>
                                         </tr>
@@ -28,35 +27,28 @@
                                             <th>Name</th>
                                             <th>Age</th>
                                             <th>Gender</th>
-                                            <th>Username</th>
                                             <th>Update</th>
                                             <th>Delete</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        {% for student in students %}
+                                        {% for teacher in teachers %}
                                         <tr>
-                                            <td>{{student.firstname|title}} {{student.surname|title}}</td>
-                                            <td>{{student.age}}</td>
-                                            <td>{{student.gender|title}}</td>
-                                            <td>{{student.username}}</td>
-                                            {% if student.username != username %}
-                                                <td>
-                                                    <a href={% url 'student_management:update_student' student.username %}>
-                                                        <button type="button" class="btn btn-primary waves-effect">
-                                                            <i class="material-icons">mode_edit</i>
-                                                        </button>
-                                                    </a>
-                                                </td>
-                                                <td> 
-                                                    <button type="button" onclick='deleteStudent({{student.id}},"{{student.username}}")' class="btn btn-danger waves-effect">
-                                                        <i class="material-icons">delete</i>
+                                            <td>{{teacher.name|title}} {{teacher.surname|title}}</td>
+                                            <td>{{teacher.age}}</td>
+                                            <td>{{teacher.gender|title}}</td>
+                                            <td>
+                                                <a href={% url 'student_management:update_teacher' teacher.id %}>
+                                                    <button type="button" class="btn btn-primary waves-effect">
+                                                        <i class="material-icons">mode_edit</i>
                                                     </button>
-                                                </td>
-                                            {% else %}
-                                                <td></td>
-                                                <td></td>
-                                            {% endif %}
+                                                </a>
+                                            </td>
+                                            <td> 
+                                                <button type="button" onclick='deleteUser({{teacher.id}},"{{teacher.name|title}} {{teacher.surname|title}}")' class="btn btn-danger waves-effect">
+                                                    <i class="material-icons">delete</i>
+                                                </button>
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -66,12 +58,11 @@
                     </div>
                 </div>
             </div>
-
         <script>
-            function deleteStudent(studentId, username){
+            function deleteUser(userId, name){
                 swal({
                     title: "Are you sure?",
-                    text: `Once deleted ${username}, you will not be able to recover this student!`,
+                    text: `Once deleted ${name}, you will not be able to recover this user!`,
                     icon: "warning",
                     buttons: {
                         cancel: {
@@ -82,7 +73,7 @@
                             closeModal: true,
                             },
                         confirm: {
-                            text: "Delete Student",
+                            text: "Delete User",
                             value: true,
                             visible: true,
                             className: "",
@@ -93,11 +84,11 @@
                     })
                     .then((willDelete) => {
                     if (willDelete) {
-                        swal("Poof! Student has been deleted!", {
+                        swal("Poof! User has been deleted!", {
                         icon: "success",
-                        }).then(()=> post('/student/delete-student/', studentId))
+                        }).then(()=> post('/user/delete-user/', userId))
                     } else {
-                        swal(`Delete aborted, student ${username} is safe!`,{
+                        swal(`Delete aborted, user ${name} is safe!`,{
                         icon: "error",
                         });
                     }
@@ -111,7 +102,7 @@
 
                 const hiddenField = document.createElement('input');
                 hiddenField.type = 'hidden';
-                hiddenField.name = 'delete_student';
+                hiddenField.name = 'delete_user';
                 hiddenField.value = value;
                 
                 const csrfField = document.createElement('input');
@@ -125,5 +116,6 @@
                 document.body.appendChild(form);
                 form.submit();
             }
+
         </script>
     {% endblock  %}

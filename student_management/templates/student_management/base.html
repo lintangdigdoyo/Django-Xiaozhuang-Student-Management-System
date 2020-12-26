@@ -10,7 +10,8 @@
     <link rel="icon" href="/static/images/logo.jpg" type="image/x-icon">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet"
+        type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
     <!-- Bootstrap Core Css -->
@@ -21,9 +22,6 @@
 
     <!-- Animation Css -->
     <link href="/static/plugins/animate-css/animate.css" rel="stylesheet" />
-
-    <!-- Sweetalert Css -->
-    
 
     <!-- Morris Chart Css-->
     <link href="/static/plugins/morrisjs/morris.css" rel="stylesheet" />
@@ -39,7 +37,6 @@
 </head>
 
 <body class="theme-indigo">
-    <!-- Page Loader -->
     <div class="page-loader-wrapper">
         <div class="loader">
             <div class="preloader">
@@ -55,44 +52,44 @@
             <p>Please wait...</p>
         </div>
     </div>
-    <!-- #END# Page Loader -->
-    <!-- Overlay For Sidebars -->
+
     <div class="overlay"></div>
-    <!-- #END# Overlay For Sidebars -->
-    <!-- Top Bar -->
+
     <nav class="navbar">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href={% url 'student_management:dashboard' %}>Xiaozhuang Student Management System</a>
+                <a class="navbar-brand" href={% url 'student_management:dashboard' %}>Xiaozhuang Student Management
+                    System</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-
+                    <li>
+                        <a href={% url 'student_management:edit_profile' %} style='display:flex; align-items: center'>
+                            <span style='margin-right: 5px'>Profile</span>
+                            <i class="material-icons">person</i>
+                        </a>
+                    </li>
                     <li>
                         <a href={% url 'student_management:logout' %} style='display:flex; align-items: center'>
                             <span style='margin-right: 5px'>Sign Out</span>
                             <i class="material-icons">input</i>
                         </a>
                     </li>
-             
                 </ul>
             </div>
         </div>
     </nav>
-    <!-- #Top Bar -->
+
     {% block navbar %}
-    
     {% endblock  %}
 
     <section class="content">
         <div class="container-fluid">
-            
-
             {% block content %}
             {% endblock  %}
-            
         </div>
     </section>
 
@@ -125,12 +122,12 @@
     <script src="/static/plugins/jquery-sparkline/jquery.sparkline.js"></script>
 
     <!-- SweetAlert Plugin Js -->
-   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <!-- Custom Js -->
     <script src="/static/js/admin.js"></script>
     <script src="/static/js/pages/ui/dialogs.js"></script>
-    
+
     <!-- Demo Js -->
     <script src="/static/js/demo.js"></script>
 
@@ -138,12 +135,11 @@
     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function () {
             $('#dataTables').DataTable();
         });
     </script>
 
-    
 </body>
 
 </html>

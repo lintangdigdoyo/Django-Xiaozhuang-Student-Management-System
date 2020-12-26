@@ -1,2 +1,4 @@
 static/upload/*
+__pycache__/
+
 !static/upload/.gitkeep

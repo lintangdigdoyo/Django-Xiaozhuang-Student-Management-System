@@ -1,0 +1,62 @@
+{% extends 'student_management/base.html' %}
+    {% block navbar %}
+        {% include 'student_management/navbar.html'%}
+    {% endblock  %}
+
+    {% block content %}
+        <div class="block-header">
+            <h2>EDIT PROFILE</h2>
+        </div>
+        <form method='POST' enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if success %}
+            <div class="alert bg-green alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                {{success}}
+            </div>
+            {% endif %}
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="body">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <span>Profile Picture</span> 
+                                        <input type="file" class="form-control" name="photo" accept='image/*'>
+                                    </div>
+                                </div>
+                                <label for="">Current Password</label>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="password" class="form-control" name="old_password" required>
+                                        <label class="form-label">Password</label>
+                                    </div>
+                                </div>
+                                <label for="">New Password</label>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="password" class="form-control" name="password" required>
+                                        <label class="form-label">Password</label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="password" class="form-control" name="confirm_password" required>
+                                        <label class="form-label">Confirm Password</label>
+                                    </div>
+                                </div>
+                                {% if warning %}
+                                <div class="alert bg-red alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>    
+                                    {{warning}}
+                                </div>
+                                {% endif %}
+                                <a style='color:black' class="btn btn-grey waves-effect" href={% url 'student_management:dashboard' %}>CANCEL</a>
+                                <input type="submit" class="btn btn-primary waves-effect" value="UPDATE">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+          
+    {% endblock  %}
