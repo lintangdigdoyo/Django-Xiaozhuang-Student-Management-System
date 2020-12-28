@@ -6,6 +6,245 @@
 
     {% block content %}
         <div class="block-header">
-                <h2>DASHBOARD</h2>
+            <h2>DASHBOARD</h2>
         </div>
+        <div class="row clearfix">
+            {% if role == 'admin' or role == 'rootuser' %}
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-light-green hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">assignment_ind</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">TOTAL USERS</div>
+                            <div class="number count-to">{{users.count}}</div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if role != 'student' %}
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-cyan hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">school</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">TOTAL STUDENTS</div>
+                            <div class="number count-to">{{students.count}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-orange hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">groups</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">TOTAL TEACHERS</div>
+                            <div class="number count-to">{{teachers.count}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-pink hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">history_edu</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">TOTAL LESSONS</div>
+                            <div class="number count-to">{{lessons.count}}</div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
+
+            {% if role == 'student' %}
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-pink hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">history_edu</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">MY TOTAL LESSONS</div>
+                            <div class="number count-to">{{student_lesson.count}}</div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+            
+            
+        {% if role != 'student' %}
+            <div class="row clearfix">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>LESSONS AVERAGE SCORE</h2>
+                        </div>
+                        <div class="body">
+                            <div id="avgcolumnchart" style="width: 450px; height: 450px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>TOTAL STUDENTS IN EACH LESSONS</h2>
+                        </div>
+                        <div class="body">
+                            <div id="studentcolumnchart" style="width: 450px; height: 450px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>LESSONS MAX SCORE</h2>
+                        </div>
+                        <div class="body">
+                            <div id="maxpiechart" style="width: 450px; height: 450px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>LESSONS MAX AND MIN SCORE</h2>
+                        </div>
+                        <div class="body">
+                            <div id="columnchart_material" style="width: 450px; height: 450px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script type="text/javascript">
+                google.charts.load('current', {'packages':['corechart', 'bar']});
+                
+                google.charts.setOnLoadCallback(avgColumnChart);
+                function avgColumnChart() {
+                    var data = google.visualization.arrayToDataTable([
+                    ['Lesson', 'Average Score'],
+                    {% for avg in avg_score %}
+                        ['{{avg.lesson__name}}',  {{avg.score__avg}}],
+                    {% endfor %}
+                    ]);
+
+                    var options = {
+                        legend: 'none',
+                    };
+
+                    var chart = new google.visualization.ColumnChart(document.getElementById('avgcolumnchart'));
+                    chart.draw(data, options);
+                }
+
+                google.charts.setOnLoadCallback(studentColumnChart);
+                function studentColumnChart() {
+                    var data = google.visualization.arrayToDataTable([
+                        ["Lesson", "Total Student"],
+                        {% for lesson in total_student %}
+                            ['{{lesson.lesson__name}}', {{lesson.student__count}}],
+                        {% endfor %}
+                    ]);
+
+                    var view = new google.visualization.DataView(data);
+                    var options = {
+                        bar: {groupWidth: "95%"},
+                        legend: { position: "none" },
+                        vAxis: {
+                            format: 0
+                        }
+                    };
+                    var chart = new google.visualization.ColumnChart(document.getElementById("studentcolumnchart"));
+                    chart.draw(view, options);
+                    }   
+
+                google.charts.setOnLoadCallback(maxPieChart);
+                function maxPieChart() {
+                    var data = google.visualization.arrayToDataTable([
+                    ['Lesson', 'Average Score'],
+                    {% for max in max_score %}
+                        ['{{max.lesson__name}}',  {{max.score__max}}],
+                    {% endfor %}
+                    ]);
+
+                    var options = {
+                        legend: 'none',
+                        pieSliceText: 'label',
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('maxpiechart'));
+                    chart.draw(data, options);
+                }
+
+
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+                    var data = google.visualization.arrayToDataTable([
+                    ['Lesson', 'Max Score', 'Min Score',],
+                    {% for score in max_min %}
+                        ['{{score.lesson__name}}', {{score.score__max}}, {{score.score__min}}],
+                    {% endfor %}
+                    ]);
+
+                    var options = {
+                        legend: { position: 'none' },
+                    };
+
+                    var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+                    chart.draw(data, google.charts.Bar.convertOptions(options));
+                }
+            </script>
+        {% elif role == "student" %}
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                MY LESSON SCORES
+                            </h2>
+                        </div>
+                        <div class="body table-responsive">
+                            <table id="dataTables" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Lesson Name</th>
+                                        <th>Teacher Name</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Average Score</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>{{student_avg.score__avg}}</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                {% for sl in student_lesson %}
+                                    <tr>
+                                        <th scope="row">{{ forloop.counter }}</th>
+                                        <td>{{sl.lesson.name|title}}</td>
+                                        <td>{{sl.lesson.teacher.name|title}}</td>
+                                        <td>{{sl.score}}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+        {% endif %}
+        
+
+        
+
     {% endblock  %}

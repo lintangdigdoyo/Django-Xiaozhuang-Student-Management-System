@@ -1,0 +1,66 @@
+{% extends 'student_management/base.html' %}
+    {% block navbar %}
+        {% include 'student_management/navbar.html' with active='list_lesson' %}
+    {% endblock  %}
+
+    {% block content %}
+            <div class="block-header">
+                <h2>ADD/UPDATE SCORE TO {{lesson.name|upper}} LESSON </h2>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                {% if success %}
+                <div class="alert bg-green alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{success}}
+                </div>
+                {% endif %}
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+                            <div class="body">
+                                <div class="table-responsive js-sweetalert">
+                                    <table id="dataTables" class="table table-bordered table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Age</th>
+                                                <th>Gender</th>
+                                                <th>Username</th>
+                                                <th>Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Age</th>
+                                                <th>Gender</th>
+                                                <th>Username</th>
+                                                <th>Score</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            {% for score in student_score %}
+                                            <tr>
+                                                <td>{{score.student.name|title}} {{score.student.surname|title}}</td>
+                                                <td>{{score.student.age}}</td>
+                                                <td>{{score.student.gender|title}}</td>
+                                                <td>{{score.student.username}}</td>
+                                                <td>
+                                                    <input type="hidden" name="student_id_{{score.student.id}}" value={{score.student.id}} >
+                                                    <input name='score_{{score.student.id}}' type="text" value={{score.score}}>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <a style='color:black' class="btn btn-grey waves-effect" href={% url 'student_management:list_lesson' %}>CANCEL</a>
+                                <input type="submit" class="btn btn-primary waves-effect" value="ADD/UPDATE">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+    {% endblock  %}

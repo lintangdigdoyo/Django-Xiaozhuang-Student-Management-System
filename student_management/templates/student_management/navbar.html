@@ -106,6 +106,34 @@
                     </ul>
                 </li>
                 {% endif %}
+                {% if role != 'student' %}
+                {% if active == 'list_lesson' or active == 'add_lesson' %}
+                <li class='active'>
+                {% else %}
+                <li>
+                {% endif %}
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="material-icons">history_edu</i>
+                        <span>LESSON</span>
+                    </a>
+                    <ul class="ml-menu">
+                        {% if active == 'list_lesson' %}
+                        <li class='active'>
+                        {% else %}
+                        <li>
+                        {% endif %}
+                            <a href={% url 'student_management:list_lesson' %}>List of Lesson</a>
+                        </li>
+                        {% if active == 'add_lesson' %}
+                        <li class='active'>
+                        {% else %}
+                        <li>
+                        {% endif %}
+                            <a href={% url 'student_management:add_lesson' %}>Add Lesson</a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </aside>

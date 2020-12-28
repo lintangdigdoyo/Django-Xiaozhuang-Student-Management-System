@@ -45,7 +45,7 @@
                                                 </a>
                                             </td>
                                             <td> 
-                                                <button type="button" onclick='deleteUser({{teacher.id}},"{{teacher.name|title}} {{teacher.surname|title}}")' class="btn btn-danger waves-effect">
+                                                <button type="button" onclick='deleteTeacher({{teacher.id}},"{{teacher.name|title}} {{teacher.surname|title}}")' class="btn btn-danger waves-effect">
                                                     <i class="material-icons">delete</i>
                                                 </button>
                                             </td>
@@ -59,10 +59,10 @@
                 </div>
             </div>
         <script>
-            function deleteUser(userId, name){
+            function deleteTeacher(teacher_id, name){
                 swal({
                     title: "Are you sure?",
-                    text: `Once deleted ${name}, you will not be able to recover this user!`,
+                    text: `Once deleted ${name}, you will not be able to recover this teacher!`,
                     icon: "warning",
                     buttons: {
                         cancel: {
@@ -73,7 +73,7 @@
                             closeModal: true,
                             },
                         confirm: {
-                            text: "Delete User",
+                            text: "Delete Teacher",
                             value: true,
                             visible: true,
                             className: "",
@@ -84,11 +84,11 @@
                     })
                     .then((willDelete) => {
                     if (willDelete) {
-                        swal("Poof! User has been deleted!", {
+                        swal("Poof! Teacher has been deleted!", {
                         icon: "success",
-                        }).then(()=> post('/user/delete-user/', userId))
+                        }).then(()=> post('/teacher/delete-teacher/', teacher_id))
                     } else {
-                        swal(`Delete aborted, user ${name} is safe!`,{
+                        swal(`Delete aborted, teacher ${name} is safe!`,{
                         icon: "error",
                         });
                     }
@@ -102,7 +102,7 @@
 
                 const hiddenField = document.createElement('input');
                 hiddenField.type = 'hidden';
-                hiddenField.name = 'delete_user';
+                hiddenField.name = 'delete_teacher';
                 hiddenField.value = value;
                 
                 const csrfField = document.createElement('input');

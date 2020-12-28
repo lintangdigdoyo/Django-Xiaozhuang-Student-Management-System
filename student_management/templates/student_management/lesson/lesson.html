@@ -1,11 +1,11 @@
 {% extends 'student_management/base.html' %}
     {% block navbar %}
-        {% include 'student_management/navbar.html' with active='list_student' %}
+        {% include 'student_management/navbar.html' with active='list_lesson' %}
     {% endblock  %}
 
     {% block content %}
             <div class="block-header">
-                <h2>LIST OF STUDENTS</h2>
+                <h2>LIST OF LESSONS</h2>
             </div>
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -16,10 +16,9 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Age</th>
-                                            <th>Gender</th>
-                                            <th>Username</th>
-                                            <th>Add Lesson</th>
+                                            <th>Teacher</th>
+                                            <th>Add/Update Score</th>
+                                            <th>Student List</th>
                                             <th>Update</th>
                                             <th>Delete</th>
                                         </tr>
@@ -27,45 +26,44 @@
                                     <tfoot>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Age</th>
-                                            <th>Gender</th>
-                                            <th>Username</th>
-                                            <th>Add Lesson</th>
+                                            <th>Teacher</th>
+                                            <th>Add/Update Score</th>
+                                            <th>Student List</th>
                                             <th>Update</th>
                                             <th>Delete</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        {% for student in students %}
+                                        {% for lesson in lessons %}
                                         <tr>
-                                            <td>{{student.name|title}} {{student.surname|title}}</td>
-                                            <td>{{student.age}}</td>
-                                            <td>{{student.gender|title}}</td>
-                                            <td>{{student.username}}</td>
+                                            <td>{{lesson.name|title}}</td>
+                                            <td>{{lesson.teacher.name}}</td>
                                             <td>
-                                                <a href={% url 'student_management:student_lesson' student.id %}>
-                                                    <button type="button" class="btn btn-success waves-effect">
-                                                        <i class="material-icons">add_box</i>
+                                                <a href={% url 'student_management:add_score' lesson.id %}>
+                                                    <button type="button" class="btn btn-info waves-effect">
+                                                        <i class="material-icons">playlist_add</i>
                                                     </button>
                                                 </a>
                                             </td>
-                                            {% if student.username != username %}
-                                                <td>
-                                                    <a href={% url 'student_management:update_student' student.username %}>
-                                                        <button type="button" class="btn btn-primary waves-effect">
-                                                            <i class="material-icons">mode_edit</i>
-                                                        </button>
-                                                    </a>
-                                                </td>
-                                                <td> 
-                                                    <button type="button" onclick='deleteStudent({{student.id}},"{{student.username}}")' class="btn btn-danger waves-effect">
-                                                        <i class="material-icons">delete</i>
+                                            <td>
+                                                <a href={% url 'student_management:detail_student' lesson.id %}>
+                                                    <button type="button" class="btn btn-success waves-effect">
+                                                        <i class="material-icons">zoom_in</i>
                                                     </button>
-                                                </td>
-                                            {% else %}
-                                                <td></td>
-                                                <td></td>
-                                            {% endif %}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href={% url 'student_management:update_lesson' lesson.id %}>
+                                                    <button type="button" class="btn btn-primary waves-effect">
+                                                        <i class="material-icons">mode_edit</i>
+                                                    </button>
+                                                </a>
+                                            </td>
+                                            <td> 
+                                                <button type="button" onclick='deleteLesson({{lesson.id}},"{{lesson.name}}")' class="btn btn-danger waves-effect">
+                                                    <i class="material-icons">delete</i>
+                                                </button>
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -77,10 +75,10 @@
             </div>
 
         <script>
-            function deleteStudent(studentId, username){
+            function deleteLesson(lessonId, name){
                 swal({
                     title: "Are you sure?",
-                    text: `Once deleted ${username}, you will not be able to recover this student!`,
+                    text: `Once deleted ${name}, you will not be able to recover this lesson!`,
                     icon: "warning",
                     buttons: {
                         cancel: {
@@ -91,7 +89,7 @@
                             closeModal: true,
                             },
                         confirm: {
-                            text: "Delete Student",
+                            text: "Delete Lesson",
                             value: true,
                             visible: true,
                             className: "",
@@ -102,11 +100,11 @@
                     })
                     .then((willDelete) => {
                     if (willDelete) {
-                        swal("Poof! Student has been deleted!", {
+                        swal("Poof! Lesson has been deleted!", {
                         icon: "success",
-                        }).then(()=> post('/student/delete-student/', studentId))
+                        }).then(()=> post('/lesson/delete-lesson/', lessonId))
                     } else {
-                        swal(`Delete aborted, student ${username} is safe!`,{
+                        swal(`Delete aborted, lesson ${name} is safe!`,{
                         icon: "error",
                         });
                     }
@@ -120,7 +118,7 @@
 
                 const hiddenField = document.createElement('input');
                 hiddenField.type = 'hidden';
-                hiddenField.name = 'delete_student';
+                hiddenField.name = 'delete_lesson';
                 hiddenField.value = value;
                 
                 const csrfField = document.createElement('input');

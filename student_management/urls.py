@@ -15,15 +15,33 @@ urlpatterns = [
     path("student/add-student/", views.add_student, name="add_student"),
     path("student/delete-student/", views.delete_student, name="delete_student"),
     path(
-        "student/update-student/<str:username>",
+        "student/update-student/<str:username>/",
         views.update_student,
         name="update_student",
     ),
-    path("teacher/", views.list_teacher, name="list_teacher"),
-    path("teacher/add-teacher", views.add_teacher, name="add_teacher"),
     path(
-        "teacher/update-teacher/<int:teacher_id>",
+        "student/<int:student_id>/add-lesson/",
+        views.student_lesson,
+        name="student_lesson",
+    ),
+    path("teacher/", views.list_teacher, name="list_teacher"),
+    path("teacher/delete-teacher/", views.delete_teacher, name="delete_teacher"),
+    path("teacher/add-teacher/", views.add_teacher, name="add_teacher"),
+    path(
+        "teacher/update-teacher/<int:teacher_id>/",
         views.update_teacher,
         name="update_teacher",
     ),
+    path("lesson/", views.list_lesson, name="list_lesson"),
+    path(
+        "lesson/edit-lesson/<int:lesson_id>", views.update_lesson, name="update_lesson"
+    ),
+    path("lesson/add-lesson/", views.add_lesson, name="add_lesson"),
+    path("lesson/delete-lesson/", views.delete_lesson, name="delete_lesson"),
+    path(
+        "lesson/detail-student/<int:lesson_id>/",
+        views.detail_student,
+        name="detail_student",
+    ),
+    path("lesson/add-score/<int:lesson_id>/", views.add_score, name="add_score"),
 ]
